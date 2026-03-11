@@ -6,6 +6,10 @@
     padding: 0;
 }
 
+:root {
+    --room-min: 160px;
+}
+
 body {
     background: #0A0A14;
     font-family: 'DM Sans', sans-serif;
@@ -82,6 +86,13 @@ body::before {
     font-size: 0.65rem;
     color: rgba(255, 255, 255, 0.25);
     margin-top: 4px;
+}
+
+@media (max-width: 767px) {
+    .header-clock,
+    .header-date {
+        display: none;
+    }
 }
 
 .live-dot {
@@ -161,7 +172,7 @@ body::before {
 
 .room-time-spacer {
     flex-shrink: 0;
-    width: 68px;
+    width: 80px;
 }
 
 .room-chips {
@@ -172,13 +183,13 @@ body::before {
 
 .room-chip {
     font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
+    font-size: 0.75rem;
     letter-spacing: 0.15em;
     text-transform: uppercase;
     background: #13131F;
     border: 1px solid #1E1E35;
     border-radius: 8px;
-    padding: 8px 12px;
+    padding: 10px 14px;
     text-align: center;
 }
 
@@ -229,14 +240,19 @@ body::before {
 
 .srow-time {
     flex-shrink: 0;
-    width: 68px;
+    width: 80px;
     padding-top: 14px;
     text-align: right;
     padding-right: 10px;
     font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    color: rgba(255, 255, 255, 0.25);
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.45);
     line-height: 1.4;
+}
+
+.srow-time-end {
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 0.7rem;
 }
 
 .srow-cells {
@@ -250,7 +266,7 @@ body::before {
     background: #13131F;
     border: 1px solid #22223A;
     border-radius: 12px;
-    padding: 14px;
+    padding: 18px;
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -333,48 +349,48 @@ body::before {
 /* ── CARD TEXT ── */
 .card-type {
     font-family: 'DM Mono', monospace;
-    font-size: 0.58rem;
+    font-size: 0.75rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.25);
+    color: rgba(255, 255, 255, 0.45);
 }
 
 .card-title {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.05rem;
+    font-size: 1.25rem;
     letter-spacing: 0.04em;
     line-height: 1.15;
     color: #fff;
 }
 
 .card-presenter {
-    font-size: 0.72rem;
+    font-size: 0.9rem;
     font-weight: 500;
-    color: rgba(0, 229, 255, 0.8);
+    color: rgba(0, 229, 255, 0.9);
     letter-spacing: 0.02em;
 }
 
 .card-span-tag {
     font-family: 'DM Mono', monospace;
-    font-size: 0.56rem;
+    font-size: 0.72rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.18);
+    color: rgba(255, 255, 255, 0.4);
 }
 
 .card-status-label {
     font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
+    font-size: 0.82rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.25);
+    color: rgba(255, 255, 255, 0.45);
 }
 
 /* Description — always visible on desktop, toggle on mobile */
 .card-desc {
-    font-size: 0.74rem;
+    font-size: 0.92rem;
     line-height: 1.55;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.65);
 }
 
 .card-desc-toggle {
@@ -383,6 +399,9 @@ body::before {
 }
 
 @media (max-width: 767px) {
+    :root {
+        --room-min: 195px;
+    }
 
     /* On mobile: descriptions are hidden by default, shown when .expanded */
     .card-desc {

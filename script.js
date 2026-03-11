@@ -238,7 +238,7 @@ function app() {
 
     getCellsStyle(sess, day) {
       const cols = this.activeRooms(day).length;
-      return `grid-template-columns:repeat(${cols},minmax(160px,1fr))`;
+      return `grid-template-columns:repeat(${cols},minmax(var(--room-min, 160px),1fr))`;
     },
 
     spannedColStyle(sess, day) {

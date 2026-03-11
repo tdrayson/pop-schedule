@@ -58,7 +58,7 @@
                         <div class="room-headers">
                             <div class="room-time-spacer"></div>
                             <div class="room-chips"
-                                :style="'grid-template-columns:repeat('+activeRooms(day).length+',minmax(160px,1fr))'">
+                                :style="'grid-template-columns:repeat('+activeRooms(day).length+',minmax(var(--room-min, 160px),1fr))'">
                                 <template x-for="room in activeRooms(day)" :key="room">
                                     <div class="room-chip" :class="'chip-'+roomNum(room)" x-text="fmtRoom(room)"></div>
                                 </template>
@@ -82,8 +82,7 @@
                                     <!-- Time -->
                                     <div class="srow-time">
                                         <div x-text="(sess.time || '').split(' - ')[0]"></div>
-                                        <div style="color:rgba(255,255,255,0.12)"
-                                            x-text="(sess.time || '').split(' - ')[1]"></div>
+                                        <div class="srow-time-end" x-text="(sess.time || '').split(' - ')[1]"></div>
                                     </div>
 
                                     <!-- Cells -->
