@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>POP! 2026 — Schedule</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.13.3/cdn.min.js" defer></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+    <div class="app" x-data="app()" x-init="init()">
+
+        <!-- Header -->
+        <div class="header">
+            <div>
+                <div class="header-label"><span class="live-dot"></span>Live Schedule</div>
+                <div class="header-title">POP! 2026</div>
+                <div class="header-sub">The International Bubble Convention</div>
+            </div>
+            <div style="text-align:right">
+                <div class="header-clock" x-text="clock"></div>
+                <div class="header-date" x-text="dateStr"></div>
+                <template x-if="showMics">
+                    <div style="margin-top:8px;justify-content:flex-end;display:flex">
+                        <div class="mic-on-badge"><span class="mic-dot"></span><span class="mic-on-text">Mic view
+                                on</span></div>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <template x-for="(day,i) in days" :key="i">
+                <button class="tab" :class="{active:activeDay===i}" @click="activeDay=i;updateLine()"
+                    x-text="day.day.toUpperCase()+' · '+day.date.split(' ').slice(0,2).join(' ')"></button>
+            </template>
+        </div>
+
+        <!-- Day content -->
+        <template x-for="(day,di) in days" :key="di">
+            <div x-show="activeDay===di">
+
+                <!-- Scroll hint on mobile -->
+                <div class="scroll-hint">← Scroll sideways to see all rooms →</div>
+
+                <!-- Scrollable schedule area -->
+                <div class="schedule-scroll-outer">
+                    <div class="schedule-scroll-inner">
+
+                        <!-- Room headers -->
+                        <div class="room-headers">
+                            <div class="room-time-spacer"></div>
+                            <div class="room-chips"
+                                :style="'grid-template-columns:repeat('+activeRooms(day).length+',minmax(160px,1fr))'">
+                                <template x-for="room in activeRooms(day)" :key="room">
+                                    <div class="room-chip" :class="'chip-'+roomNum(room)" x-text="fmtRoom(room)"></div>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- Timeline -->
+                        <div class="timeline">
+
+                            <!-- Live line -->
+                            <div class="time-line"
+                                x-show="isToday(day)&&activeDay===days.indexOf(day)&&linePos>=0&&linePos<=100"
+                                :style="'top:'+linePos+'%'">
+                                <div class="time-dot"></div>
+                            </div>
+
+                            <!-- Session rows -->
+                            <template x-for="(sess,si) in day.sessions" :key="si">
+                                <div class="srow">
+
+                                    <!-- Time -->
+                                    <div class="srow-time">
+                                        <div x-text="(sess.time || '').split(' - ')[0]"></div>
+                                        <div style="color:rgba(255,255,255,0.12)"
+                                            x-text="(sess.time || '').split(' - ')[1]"></div>
+                                    </div>
+
+                                    <!-- Cells -->
+                                    <div class="srow-cells" :style="getCellsStyle(sess,day)">
+
+                                        <!-- Lunch / status: full span -->
+                                        <template x-if="sess._lunch||sess._status">
+                                            <div style="grid-column:1/-1">
+                                                <div :class="sess._lunch?'card-lunch':'card-status'">
+                                                    <span class="card-status-label" x-text="sess.label"></span>
+                                                </div>
+                                            </div>
+                                        </template>
+
+                                        <!-- Spanned session (rooms_combined OR _span_all flag) -->
+                                        <template x-if="!sess._lunch&&!sess._status&&isSpanned(sess)">
+                                            <div :style="spannedColStyle(sess,day)" x-html="renderSpannedCard(sess)"></div>
+                                            <!-- Render room_4 cell separately if it exists alongside the span -->
+                                            <template x-for="room in activeRooms(day).filter(r=>r==='room_4')"
+                                                :key="room">
+                                                <div x-html="renderRoomCell(sess,room)"></div>
+                                            </template>
+                                        </template>
+
+                                        <!-- Normal per-room cells -->
+                                        <template x-if="!sess._lunch&&!sess._status&&!isSpanned(sess)">
+                                            <template x-for="room in activeRooms(day)" :key="room">
+                                                <div x-html="renderRoomCell(sess,room)"></div>
+                                            </template>
+                                        </template>
+
+                                    </div>
+                                </div>
+                            </template>
+
+                        </div><!-- /timeline -->
+                    </div><!-- /inner -->
+                </div><!-- /outer -->
+            </div>
+        </template>
+
+        <!-- Legend -->
+        <div class="legend">
+            <template x-if="isToday(days[activeDay])">
+                <div class="legend-item">
+                    <span style="display:inline-block;width:20px;height:1px;background:#FF3D9A"></span>
+                    Current time
+                </div>
+            </template>
+            <div class="legend-item" style="display:none" id="mob-legend">
+                Tap a session to expand description
+            </div>
+            <template x-if="showMics">
+                <div class="legend-item"><span class="mic-dot"></span>Microphone count</div>
+            </template>
+            <div class="legend-item" style="margin-left:auto">© AOIBA / POP! 2026</div>
+        </div>
+
+
+    </div><!-- /app -->
+    <script src="schedule.js"></script>
+    <script src="script.js"></script>
+</body>

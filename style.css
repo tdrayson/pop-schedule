@@ -1,0 +1,541 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #0A0A14;
+    font-family: 'DM Sans', sans-serif;
+    color: #fff;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+}
+
+.app {
+    position: relative;
+    z-index: 1;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 24px 16px 48px;
+}
+
+/* ── HEADER ── */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.header-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #FF3D9A;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.header-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 10vw, 6rem);
+    line-height: 0.95;
+    background: linear-gradient(120deg, #FF3D9A 0%, #B07FFF 50%, #00E5FF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.header-sub {
+    font-size: 0.7rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.3);
+    margin-top: 8px;
+}
+
+.header-clock {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    color: #00E5FF;
+}
+
+.header-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.25);
+    margin-top: 4px;
+}
+
+.live-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #FF3D9A;
+    animation: pls 2s infinite;
+    flex-shrink: 0;
+}
+
+@keyframes pls {
+
+    0%,
+    100% {
+        opacity: 1
+    }
+
+    50% {
+        opacity: 0.4
+    }
+}
+
+/* ── TABS ── */
+.tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+}
+
+.tab {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.1em;
+    border: 1px solid #1E1E35;
+    border-radius: 10px;
+    padding: 10px 20px;
+    color: rgba(255, 255, 255, 0.35);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    background: transparent;
+}
+
+.tab:hover {
+    color: rgba(255, 255, 255, 0.65);
+    border-color: rgba(255, 255, 255, 0.18);
+}
+
+.tab.active {
+    background: linear-gradient(135deg, rgba(255, 61, 154, 0.1), rgba(176, 127, 255, 0.1));
+    border-color: #FF3D9A;
+    color: #FF3D9A;
+}
+
+/* ── SCROLL WRAPPER ── */
+/* On mobile: the schedule area scrolls horizontally at a min-width so cards don't squash */
+.schedule-scroll-outer {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.schedule-scroll-inner {
+    min-width: 600px;
+    /* cards never squash below this */
+}
+
+/* ── ROOM CHIPS ── */
+.room-headers {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.room-time-spacer {
+    flex-shrink: 0;
+    width: 68px;
+}
+
+.room-chips {
+    flex: 1;
+    display: grid;
+    gap: 8px;
+}
+
+.room-chip {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: #13131F;
+    border: 1px solid #1E1E35;
+    border-radius: 8px;
+    padding: 8px 12px;
+    text-align: center;
+}
+
+.chip-1 {
+    color: #FF3D9A
+}
+
+.chip-2 {
+    color: #00E5FF
+}
+
+.chip-3 {
+    color: #FFE34E
+}
+
+.chip-4 {
+    color: #B07FFF
+}
+
+.chip-inside {
+    color: #FF3D9A
+}
+
+.chip-outside {
+    color: #00E5FF
+}
+
+.chip-park {
+    color: #FFE34E
+}
+
+.chip-gala {
+    color: #B07FFF
+}
+
+/* ── TIMELINE ── */
+.timeline {
+    position: relative;
+}
+
+/* ── ROW ── */
+.srow {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+    margin-bottom: 8px;
+}
+
+.srow-time {
+    flex-shrink: 0;
+    width: 68px;
+    padding-top: 14px;
+    text-align: right;
+    padding-right: 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.25);
+    line-height: 1.4;
+}
+
+.srow-cells {
+    flex: 1;
+    display: grid;
+    gap: 8px;
+}
+
+/* ── CARD ── */
+.card {
+    background: #13131F;
+    border: 1px solid #22223A;
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: transform 0.15s, border-color 0.15s;
+    height: 100%;
+    cursor: default;
+}
+
+.card.has-desc {
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: translateY(-1px);
+}
+
+.card-r1 {
+    border-left: 3px solid rgba(255, 61, 154, 0.45);
+}
+
+.card-r2 {
+    border-left: 3px solid rgba(0, 229, 255, 0.45);
+}
+
+.card-r3 {
+    border-left: 3px solid rgba(255, 227, 78, 0.45);
+}
+
+.card-r4 {
+    border-left: 3px solid rgba(176, 127, 255, 0.45);
+}
+
+.card-r1:hover {
+    border-color: rgba(255, 61, 154, 0.6);
+}
+
+.card-r2:hover {
+    border-color: rgba(0, 229, 255, 0.6);
+}
+
+.card-r3:hover {
+    border-color: rgba(255, 227, 78, 0.6);
+}
+
+.card-r4:hover {
+    border-color: rgba(176, 127, 255, 0.6);
+}
+
+.card-lunch {
+    background: rgba(255, 255, 255, 0.015);
+    border: 1px dashed rgba(255, 255, 255, 0.07);
+    border-radius: 12px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-height: 44px;
+}
+
+.card-status {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-height: 44px;
+}
+
+.card-empty {
+    border: 1px dashed rgba(255, 255, 255, 0.04);
+    border-radius: 12px;
+    min-height: 48px;
+    height: 100%;
+}
+
+/* ── CARD TEXT ── */
+.card-type {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.25);
+}
+
+.card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.05rem;
+    letter-spacing: 0.04em;
+    line-height: 1.15;
+    color: #fff;
+}
+
+.card-presenter {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(0, 229, 255, 0.8);
+    letter-spacing: 0.02em;
+}
+
+.card-span-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.56rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.18);
+}
+
+.card-status-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.25);
+}
+
+/* Description — always visible on desktop, toggle on mobile */
+.card-desc {
+    font-size: 0.74rem;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.card-desc-toggle {
+    display: none;
+    /* hidden on desktop */
+}
+
+@media (max-width: 767px) {
+
+    /* On mobile: descriptions are hidden by default, shown when .expanded */
+    .card-desc {
+        display: none;
+    }
+
+    .card.expanded .card-desc {
+        display: block;
+    }
+
+    /* Show the expand hint */
+    .card-desc-toggle {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-family: 'DM Mono', monospace;
+        font-size: 0.55rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.2);
+        margin-top: 2px;
+    }
+
+    .card.expanded .card-desc-toggle .toggle-icon {
+        transform: rotate(180deg);
+    }
+
+    .toggle-icon {
+        transition: transform 0.2s;
+        display: inline-block;
+        font-size: 0.6rem;
+    }
+}
+
+/* ── MIC BADGE ── */
+.mic-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(255, 227, 78, 0.08);
+    border: 1px solid rgba(255, 227, 78, 0.2);
+    border-radius: 20px;
+    padding: 3px 9px;
+    margin-top: auto;
+    align-self: flex-start;
+}
+
+.mic-badge-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.08em;
+    color: #FFE34E;
+}
+
+.mic-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #FFE34E;
+    flex-shrink: 0;
+}
+
+.mic-on-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(255, 227, 78, 0.08);
+    border: 1px solid rgba(255, 227, 78, 0.2);
+    border-radius: 20px;
+    padding: 3px 10px;
+}
+
+.mic-on-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #FFE34E;
+}
+
+/* ── LIVE TIME LINE ── */
+.time-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    z-index: 30;
+    pointer-events: none;
+    background: linear-gradient(90deg, transparent 0%, #FF3D9A 12%, #FF3D9A 88%, transparent 100%);
+}
+
+.time-dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #FF3D9A;
+    box-shadow: 0 0 10px #FF3D9A, 0 0 22px rgba(255, 61, 154, 0.55);
+    animation: tdot 2.5s infinite;
+}
+
+@keyframes tdot {
+
+    0%,
+    100% {
+        box-shadow: 0 0 10px #FF3D9A, 0 0 22px rgba(255, 61, 154, 0.55)
+    }
+
+    50% {
+        box-shadow: 0 0 16px #FF3D9A, 0 0 36px rgba(255, 61, 154, 0.8)
+    }
+}
+
+/* ── LEGEND ── */
+.legend {
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid #1a1a2e;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 24px;
+    align-items: center;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.25);
+}
+
+/* ── SCROLL HINT (mobile only) ── */
+.scroll-hint {
+    display: none;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.2);
+    margin-bottom: 8px;
+    align-items: center;
+    gap: 6px;
+}
+
+@media (max-width:767px) {
+    .scroll-hint {
+        display: flex;
+    }
+}
