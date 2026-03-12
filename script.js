@@ -85,8 +85,9 @@ function app() {
       const now = new Date();
       const nowMins = now.getHours() * 60 + now.getMinutes();
 
-      const timeline = document.querySelector('.timeline');
-      if (!timeline) {
+      const timelines = document.querySelectorAll('.timeline');
+      const timeline = timelines[this.activeDay];
+      if (!timeline || !timeline.offsetHeight) {
         this.linePos = -1;
         return;
       }
