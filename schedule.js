@@ -322,14 +322,7 @@ const SCHEDULE_DAYS = [
             microphones: 1,
           },
           room_3: { _skip: true },
-          room_4: {
-            title: 'Staging Surgery – 1',
-            presenter: 'Dan Thorn',
-            type: 'Workshop',
-            description:
-              'Bring your performance questions and ideas to a supportive workshop space for focused guidance, creative exploration, and direction in shaping stronger, more expressive bubble shows.',
-            microphones: 0,
-          },
+          room_4: { _skip: true },
         },
       },
       {
@@ -352,14 +345,7 @@ const SCHEDULE_DAYS = [
               'A foamy discussion and dynamic, hands-on workshop exploring foamer types, practical performance integration for indoor and outdoor settings, making your own foamer, and culminating in a group foam finale.',
             microphones: 1,
           },
-          room_4: {
-            title: 'Staging Surgery – 2',
-            presenter: 'Dan Thorn',
-            type: 'Workshop',
-            description:
-              'Bring your performance questions and ideas to a supportive workshop space for focused guidance, creative exploration, and direction in shaping stronger, more expressive bubble shows.',
-            microphones: 0,
-          },
+          room_4: { _skip: true },
         },
       },
       {

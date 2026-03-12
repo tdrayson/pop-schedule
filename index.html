@@ -99,11 +99,15 @@
 
                                         <!-- Spanned session (rooms_combined OR _span_all flag) -->
                                         <template x-if="!sess._lunch&&!sess._status&&isSpanned(sess)">
-                                            <div :style="spannedColStyle(sess,day)" x-html="renderSpannedCard(sess)"></div>
-                                            <!-- Render room_4 cell separately if it exists alongside the span -->
-                                            <template x-for="room in activeRooms(day).filter(r=>r==='room_4')"
+                                            <div :style="spannedColStyle(sess,day)" x-html="renderSpannedCard(sess)">
+                                            </div>
+                                        </template>
+                                        <template x-if="!sess._lunch&&!sess._status&&isSpanned(sess)">
+                                            <template
+                                                x-for="room in activeRooms(day).filter(r=>!getRoomsCombined(sess).includes(r))"
                                                 :key="room">
-                                                <div x-html="renderRoomCell(sess,room)"></div>
+                                                <div :style="'grid-column:' + (activeRooms(day).indexOf(room)+1)"
+                                                    x-html="renderRoomCell(sess,room)"></div>
                                             </template>
                                         </template>
 

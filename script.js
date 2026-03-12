@@ -265,6 +265,17 @@ function app() {
       );
     },
 
+    getRoomsCombined(sess) {
+      if (sess._span_all && sess.data?.rooms_combined)
+        return sess.data.rooms_combined;
+      const roomWithSpan =
+        sess.rooms &&
+        Object.values(sess.rooms).find(
+          (d) => d && d.rooms_combined && d.rooms_combined.length > 0,
+        );
+      return roomWithSpan ? roomWithSpan.rooms_combined : [];
+    },
+
     micHtml(data) {
       if (!this.showMics || !data.microphones) return '';
       const dots = Array(data.microphones)
