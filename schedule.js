@@ -257,7 +257,15 @@ const SCHEDULE_DAYS = [
       {
         time: '12:15 - 13:00',
         rooms: {
-          room_1: { _skip: true },
+          room_1: {
+            title: 'Dry Ice Bubbles - AOIBA Members Only',
+            presenter: 'Cj The Bubble Girl',
+            type: 'Workshop',
+            description:
+              'Discover how to create dramatic dry ice bubbles, exploring misty effects, visual impact, and safe hands-on techniques.',
+            availability: 'AOIBA Members only',
+            microphones: 1,
+          },
           room_2: { _skip: true },
           room_3: {
             title: "Bubblers' Skill Share – Guided Workshop Session",
